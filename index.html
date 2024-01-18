@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather app</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body> 
+    <div class="card">
+        <div class="search">
+            <input type="text" placeholder="Enter The city name" spellcheck="false">
+            <button><img src="search.jpg"></button>
+        </div>
+        <div class="weather">
+            <img src="rain.jpg" class="weather-icon">
+            <h1 class="temp">22°C</h1>
+            <h2 class="city">New York</h2>
+            <div class="details">
+                <div class="col">
+                    <img src="humidity.jpg">
+                    <div>
+                        <p class="humidity">50%</p>
+                        <p>Humidity</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <img src="wind.jpg">
+                    <div>
+                        <p class="Wind">15 km/h</p>
+                        <p>Wind speed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const apiKey = "d6b59b6e449b4f561d2d984eb2e44676";
+        const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+      
+        const searchBox = document.querySelector(".search input");
+        const searchBtn = document.querySelector(".search button");
+        const weatherIcon = document.querySelector(".weather-icon");
+        const cityElement = document.querySelector(".city");
+        const tempElement = document.querySelector(".temp");
+        const humidityElement = document.querySelector(".humidity");
+        const windElement = document.querySelector(".wind");
+      
+        async function checkWeather(city) {
+          try {
+            const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
+            const data = await response.json();
+      
+            console.log(data);
+      
+            if (cityElement) {
+              cityElement.innerHTML = data.name;
+            }
+      
+            if (tempElement) {
+              tempElement.innerHTML = Math.round(data.main.temp) + "°C";
+            }
+      
+            if (humidityElement) {
+              humidityElement.innerHTML = data.main.humidity + "%";
+            }
+      
+            if (windElement) {
+              windElement.innerHTML = data.wind.speed + " km/h";
+            }
+      
+          } catch (error) {
+            console.error("Error fetching weather data:", error);
+          }
+        }
+      
+        searchBtn.addEventListener("click", () => {
+          checkWeather(searchBox.value);
+        });
+      </script>
+      
+      
+</body>
+</html>
